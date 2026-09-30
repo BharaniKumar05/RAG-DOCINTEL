@@ -1,6 +1,6 @@
 """
 Runner script for AI-Powered Document Intelligence & RAG System.
-Initializes knowledge base and starts FastAPI / Uvicorn server on http://127.0.0.1:8000
+Initializes knowledge base and starts FastAPI / Uvicorn server.
 """
 
 import sys
@@ -9,8 +9,10 @@ import uvicorn
 
 # Add current workspace root to PYTHONPATH
 workspace_dir = os.path.dirname(os.path.abspath(__file__))
+
 if workspace_dir not in sys.path:
     sys.path.insert(0, workspace_dir)
+
 
 if __name__ == "__main__":
     print("\n========================================================")
@@ -21,13 +23,13 @@ if __name__ == "__main__":
     print(" [*] Hybrid Retrieval: Reciprocal Rank Fusion (RRF)")
     print(" [*] Context Reranker: Cross-Encoder calibrated scoring")
     print(" [*] 2D Vector Space Canvas: Live PCA Projections")
-    print(" [*] Web UI & SSE Stream: http://127.0.0.1:8000")
+    print(" [*] Web UI & SSE Stream")
     print("========================================================\n")
 
     uvicorn.run(
         "backend.main:app",
-        host="127.0.0.1",
-        port=8000,
-        reload=True,
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 8000)),
+        reload=False,
         log_level="info"
     )
