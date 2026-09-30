@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>DocuIntel</title>
+
+  <meta name="description"
+    content="Minimalist, professional Document Intelligence AI. Upload documents and ask precise questions.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+
+  <!-- Application CSS -->
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+
+  <div class="app-layout">
+
+    <!-- =========================================================
+         SIDEBAR
+         ========================================================= -->
+
+    <aside class="sidebar" id="sidebar">
+
+      <div class="sidebar-header">
+
+        <button class="btn-new-chat" id="btnNewChat">
+
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+
+          <span>New chat</span>
+
+        </button>
+
+        <button class="btn-icon-sidebar" id="btnToggleSidebar" title="Toggle sidebar">
+
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+
+            <line x1="9" y1="3" x2="9" y2="21"></line>
+          </svg>
+
+        </button>
+
+      </div>
+
+
+      <!-- Documents -->
+
+      <div class="sidebar-section-title">
+
+        <span>Documents & Knowledge</span>
+
+        <button class="btn-upload-tiny" id="btnSidebarUpload" title="Upload Document">
+          + Add
+        </button>
+
+      </div>
+
+
+      <div class="document-list" id="documentList">
+        <!-- Documents populated by JavaScript -->
+      </div>
+
+
+      <!-- Sidebar Footer -->
+
+      <div class="sidebar-footer">
+
+        <div class="model-indicator" id="sidebarModelInfo">
+
+          <span class="status-indicator"></span>
+
+          <span id="activeModelLabel">
+            Claude Local Engine
+          </span>
+
+        </div>
+
+
+        <button class="btn-footer-settings" id="btnOpenSettings" title="Settings">
+
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+            <circle cx="12" cy="12" r="3"></circle>
+
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a1.65 1.65 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a1.65 1.65 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+            </path>
+
+          </svg>
+
+          <span>Settings</span>
+
+        </button>
+
+      </div>
+
+    </aside>
+
+
+    <!-- =========================================================
+         MAIN WORKSPACE
+         ========================================================= -->
+
+    <main class="main-workspace">
+
+      <!-- Top Navigation -->
+
+      <header class="top-nav">
+
+        <button class="btn-icon-sidebar-mobile" id="btnToggleSidebarMobile">
+
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+
+          </svg>
+
+        </button>
+
+
+        <div class="chat-header-title">
+
+          <span>DocuIntel</span>
+
+          <span class="chat-header-sub">
+            Document Assistant
+          </span>
+
+        </div>
+
+
+        <button class="btn-pill-reset" id="btnResetCorpus" title="Restore sample documents">
+          Reset Samples
+        </button>
+
+      </header>
+
+
+      <!-- =========================================================
+           CHAT AREA
+           ========================================================= -->
+
+      <div class="chat-viewport" id="chatViewport">
+
+        <div class="chat-scroll-container" id="chatContainer">
+
+          <!-- Welcome -->
+
+          <div class="welcome-container" id="welcomeContainer">
+
+            <div class="claude-avatar-large">
+
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+
+              </svg>
+
+            </div>
+
+
+            <h1 class="welcome-heading">
+              What would you like to know from your documents?
+            </h1>
+
+
+            <p class="welcome-subtext">
+              Upload any PDF, document, or contract.
+              Ask direct questions and receive clear,
+              executive answers.
+            </p>
+
+
+            <div class="suggestion-grid">
+
+              <!-- Optional suggestion cards -->
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================================================
+           INPUT
+           ========================================================= -->
+
+      <div class="input-section">
+
+        <div class="input-wrapper">
+
+          <input type="file" id="fileInput" multiple accept=".pdf,.txt,.md,.markdown,.csv,.json" style="display:none;">
+
+
+          <button class="btn-attach" id="btnAttach" title="Upload PDF or Document">
+
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+              <path
+                d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48">
+              </path>
+
+            </svg>
+
+          </button>
+
+
+          <textarea id="chatInput" class="claude-input" rows="1"
+            placeholder="Reply to DocuIntel or ask a question about your documents..."></textarea>
+
+
+          <button class="btn-send" id="btnSend" title="Send question">
+
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+
+              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+
+            </svg>
+
+          </button>
+
+        </div>
+
+
+        <div class="input-disclaimer">
+          DocuIntel generates responses strictly grounded
+          in your uploaded documents.
+        </div>
+
+      </div>
+
+    </main>
+
+
+    <!-- =========================================================
+         SETTINGS MODAL
+         ========================================================= -->
+
+    <div class="modal-backdrop" id="settingsModal">
+
+      <div class="modal-card">
+
+        <div class="modal-head">
+
+          <h3>Settings</h3>
+
+          <button class="btn-close-modal" id="btnCloseSettings">
+            ✕
+          </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+          <!-- Provider -->
+
+          <div class="setting-item">
+
+            <label>
+              Model Provider
+            </label>
+
+            <select id="settingProvider" class="styled-select">
+
+              <option value="local">
+                Claude Local Engine
+                (Offline, No API Key Required)
+              </option>
+
+              <option value="gemini">
+                Google Gemini
+              </option>
+
+              <option value="openai">
+                OpenAI
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- API Key -->
+
+          <div class="setting-item" id="apiKeyGroup" style="display:none;">
+
+            <label>
+              API Key
+            </label>
+
+            <input type="password" id="settingApiKey" class="styled-input" placeholder="Enter API Key...">
+
+          </div>
+
+
+          <!-- Chunk Strategy -->
+
+          <div class="setting-item">
+
+            <label>
+              Chunking Strategy
+            </label>
+
+            <select id="settingChunkStrategy" class="styled-select">
+
+              <option value="semantic">
+                Semantic & Header-Aware
+              </option>
+
+              <option value="sliding_window">
+                Sliding Window with Overlap
+              </option>
+
+              <option value="sentence">
+                Sentence-Level Boundary
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <div class="modal-foot">
+
+          <button class="btn-secondary" id="btnCancelSettings">
+            Cancel
+          </button>
+
+          <button class="btn-primary" id="btnSaveSettings">
+            Save Changes
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       MARKDOWN LIBRARIES
+       ========================================================= -->
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+
+
+  <!-- Application JavaScript -->
+
+  <script src="/static/app.js"></script>
+
+</body>
+
+</html>
