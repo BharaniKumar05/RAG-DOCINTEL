@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+python-multipart
+numpy
+pandas
+scikit-learn
+scipy
+rank-bm25
+sentence-transformers
+pypdf
+python-docx
+openpyxl
+requests
+httpx
+python-dotenv
+google-generativeai
+torch
